@@ -21,7 +21,6 @@ namespace UDPClient
 
         static void Main(string[] args)
         {
-            //testing to see if the git thing works...
             Thread Thread1 = null;  // create thread instance
             Thread Thread2 = null;  
             UdpClient udpClient = new UdpClient(8008);
@@ -90,7 +89,6 @@ namespace UDPClient
                 }
             }
             Console.WriteLine("Hash Not Yet Found. Last Position: " + j.ToString());
-            //return sb.ToString();
         }
     }
 }
