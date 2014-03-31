@@ -1,0 +1,13 @@
+F:\PUT ON GOOGLE DRIVE\UDP Client\UDPClient\UDPClient\bin\Debug\UDPClient.exe
+F:\PUT ON GOOGLE DRIVE\UDP Client\UDPClient\UDPClient\bin\Debug\UDPClient.pdb
+F:\PUT ON GOOGLE DRIVE\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.exe
+F:\PUT ON GOOGLE DRIVE\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.pdb
+D:\Documents\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.exe
+D:\Documents\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.pdb
+C:\Users\James\Google Drive\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.exe
+C:\Users\James\Google Drive\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.pdb
+C:\Users\James\Google Drive\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\bin\Debug\UDPClient.exe
+C:\Users\James\Google Drive\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\bin\Debug\UDPClient.pdb
+D:\Documents\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\bin\Debug\UDPClient.exe
+D:\Documents\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\bin\Debug\UDPClient.pdb
+D:\Documents\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.csprojResolveAssemblyReference.cache
