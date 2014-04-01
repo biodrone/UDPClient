@@ -48,11 +48,15 @@ namespace UDPClient
             //get the position from the server
             UdpClient udpClient2 = new UdpClient(8009);
             string returnData = "";
+            int test = 0;
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8009);  //open port 8009 on this machine
 
             recieveBytes = udpClient2.Receive(ref remoteIPEndPoint);
             returnData = Encoding.ASCII.GetString(recieveBytes);
+
+            //test = Encoding.ASCII.GetString(returnData); //needs to be an int so that it can go into the crackPos and be used
+            Vars.srvPos = Convert.ToInt32(returnData);
             Console.WriteLine("Current Position From Server: " + returnData.TrimEnd()); //position recieved from server
 
             udpClient2.Close();
