@@ -17,7 +17,7 @@ namespace UDPClient
             public static string srvHash = "";
             public static int srvPos = 0;
             public static int srvInc = 1000000;
-            public static string srvIP = "192.168.43.46";
+            public static string srvIP = "192.168.1.107";
         }
 
         static void Main(string[] args)
@@ -49,14 +49,13 @@ namespace UDPClient
             //get the position from the server
             UdpClient udpClient2 = new UdpClient(8009);
             string returnData = "";
-            //int test = 0;
+
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8009);  //open port 8009 on this machine
 
             recieveBytes = udpClient2.Receive(ref remoteIPEndPoint);
             returnData = Encoding.ASCII.GetString(recieveBytes);
 
-            //test = Encoding.ASCII.GetString(returnData); //needs to be an int so that it can go into the crackPos and be used
             Vars.srvPos = Convert.ToInt32(returnData);
             Console.WriteLine("Current Position From Server: " + returnData.TrimEnd()); //position recieved from server
 
@@ -86,8 +85,20 @@ namespace UDPClient
                     Console.WriteLine("Cracking Position: " + j.ToString());
                 }
             }
-            Console.WriteLine("Hash Not Yet Found. Last Position: " + j.ToString());
+            Console.WriteLine("Hash Not Yet Found. Last Position: " + (j - 1).ToString());
+            returnPos(j - 1);
             Crack();
+        }
+
+        static void returnPos(int curPos)
+        {
+            UdpClient sender = new UdpClient();
+            Byte[] sendBytes = new Byte[1024];
+            IPAddress address = IPAddress.Parse(IPAddress.Broadcast.ToString());
+            sender.Connect(address, 8010);
+
+            sendBytes = Encoding.ASCII.GetBytes(curPos.ToString());
+            sender.Send(sendBytes, sendBytes.GetLength(0));
         }
     }
 }
