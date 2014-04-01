@@ -16,7 +16,7 @@ namespace UDPClient
         {
             public static string srvHash = "";
             public static int srvPos = 0;
-            public static int srvInc = 2000;
+            public static int srvInc = 1000000;
             public static string srvIP = "192.168.43.46";
         }
 
