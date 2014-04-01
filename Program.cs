@@ -86,7 +86,7 @@ namespace UDPClient
                 {
                     Console.WriteLine("Cracking Position: " + j.ToString());
                 }
-                //Vars.curPos = (j);
+                Vars.curPos = (j);
             }
             Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.curPos.ToString());
             //Vars.srvPos = Vars.curPos;
