@@ -16,8 +16,9 @@ namespace UDPClient
         {
             public static string srvHash = "";
             public static int srvPos = 0;
-            public static int srvInc = 2000;
-            public static string srvIP = "192.168.43.46";
+            public static int srvInc = 1000000;
+            public static int curPos = 0;
+            public static string srvIP = "192.168.1.107";
         }
 
         static void Main(string[] args)
@@ -37,7 +38,7 @@ namespace UDPClient
             Thread1 = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
             Thread1.Start();
 
-            Console.WriteLine("Press Enter Program Finished");
+            Console.WriteLine("It's Crack Time, Warm The Pipe Up");
             Console.ReadLine(); //delay end of program
             Thread1.Abort();
             udpClient.Close();  //close the connection
@@ -49,21 +50,20 @@ namespace UDPClient
             //get the position from the server
             UdpClient udpClient2 = new UdpClient(8009);
             string returnData = "";
-            //int test = 0;
+
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8009);  //open port 8009 on this machine
 
             recieveBytes = udpClient2.Receive(ref remoteIPEndPoint);
             returnData = Encoding.ASCII.GetString(recieveBytes);
 
-            //test = Encoding.ASCII.GetString(returnData); //needs to be an int so that it can go into the crackPos and be used
             Vars.srvPos = Convert.ToInt32(returnData);
-            Console.WriteLine("Current Position From Server: " + returnData.TrimEnd()); //position recieved from server
+            Console.WriteLine("Current Position From Server: " + Vars.srvPos); //position recieved from server
 
             udpClient2.Close();
+            returnPos(Vars.curPos + Vars.srvInc); //if a client connects in the middle of this, they get the next set of work
 
-            int j = 0;
-            for (j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
+            for (int j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
             {
                 //calculate MD5 hash from input
                 MD5 md5 = MD5.Create();
@@ -80,13 +80,28 @@ namespace UDPClient
                 if (0 == comp.Compare(Vars.srvHash, sb.ToString()))
                 {
                     Console.WriteLine("Hash Found: " + j.ToString());
+                    break;
                 }
                 if (j % 100000 == 0)
                 {
                     Console.WriteLine("Cracking Position: " + j.ToString());
                 }
+                Vars.curPos = (j);
             }
-            Console.WriteLine("Hash Not Yet Found. Last Position: " + j.ToString());
+            Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.curPos.ToString());
+            
+            Crack();
+        }
+
+        static void returnPos(int curPos)
+        {
+            UdpClient sender = new UdpClient();
+            Byte[] sendBytes = new Byte[1024];
+            IPAddress address = IPAddress.Parse(IPAddress.Broadcast.ToString());
+            sender.Connect(address, 8010);
+
+            sendBytes = Encoding.ASCII.GetBytes(curPos.ToString());
+            sender.Send(sendBytes, sendBytes.GetLength(0));
         }
     }
 }
