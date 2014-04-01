@@ -57,7 +57,7 @@ namespace UDPClient
             returnData = Encoding.ASCII.GetString(recieveBytes);
 
             Vars.srvPos = Convert.ToInt32(returnData);
-            Console.WriteLine("Current Position From Server: " + returnData.TrimEnd()); //position recieved from server
+            Console.WriteLine("Current Position From Server: " + Vars.srvPos); //position recieved from server
 
             udpClient2.Close();
 
