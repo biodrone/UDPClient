@@ -16,29 +16,25 @@ namespace UDPClient
         {
             public static string srvHash = "";
             public static int srvPos = 0;
-            public static int srvInc = 412819820;
+            public static int srvInc = 2000;
         }
 
         static void Main(string[] args)
         {
             Thread Thread1 = null;  // create thread instance
-            //Thread Thread2 = null;  
             UdpClient udpClient = new UdpClient(8008);
 
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
             Console.WriteLine("Client has Started");
+
             //recieve the data from the UDP packet
-            
             recieveBytes = udpClient.Receive(ref remoteIPEndPoint);
             Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
             Console.WriteLine(Vars.srvHash); //hash debug
 
             Thread1 = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
             Thread1.Start();
-
-            //Thread2 = new Thread(new ThreadStart(recievePos));
-            //Thread2.Start();
 
             Console.WriteLine("Press Enter Program Finished");
             Console.ReadLine(); //delay end of program
