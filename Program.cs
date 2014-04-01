@@ -61,7 +61,7 @@ namespace UDPClient
             Console.WriteLine("Current Position From Server: " + Vars.srvPos); //position recieved from server
 
             udpClient2.Close();
-            returnPos(Vars.curPos + Vars.srvInc); //if a client connects in the middle of this, they get the next set of work
+            returnPos(Vars.srvPos + Vars.srvInc); //if a client connects in the middle of this, they get the next set of work
 
             for (int j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
             {
@@ -86,9 +86,9 @@ namespace UDPClient
                 {
                     Console.WriteLine("Cracking Position: " + j.ToString());
                 }
-                Vars.curPos = (j);
+                //Vars.curPos = (j);
             }
-            Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.curPos.ToString());
+            Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.srvPos.ToString());
             
             Crack();
         }
