@@ -18,3 +18,6 @@ C:\Code\UDPClient\obj\x86\Debug\UDPClient.pdb
 C:\Code\UDPClient\bin\Debug\UDPClient.exe
 C:\Code\UDPClient\bin\Debug\UDPClient.pdb
 C:\Code\UDPClient\obj\x86\Debug\UDPClient.csprojResolveAssemblyReference.cache
+D:\Code\UDPClient\bin\Debug\UDPClient.exe
+D:\Code\UDPClient\bin\Debug\UDPClient.pdb
+D:\Code\UDPClient\obj\x86\Debug\UDPClient.csprojResolveAssemblyReference.cache

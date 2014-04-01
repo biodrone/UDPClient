@@ -37,7 +37,7 @@ namespace UDPClient
             Thread1 = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
             Thread1.Start();
 
-            Console.WriteLine("Press Enter Program Finished");
+            Console.WriteLine("It's Crack Time, Warm The Pipe Up");
             Console.ReadLine(); //delay end of program
             Thread1.Abort();
             udpClient.Close();  //close the connection
@@ -87,6 +87,7 @@ namespace UDPClient
                 }
             }
             Console.WriteLine("Hash Not Yet Found. Last Position: " + j.ToString());
+            Crack();
         }
     }
 }
