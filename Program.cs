@@ -17,6 +17,7 @@ namespace UDPClient
             public static string srvHash = "";
             public static int srvPos = 0;
             public static int srvInc = 1000000;
+            public static int curPos = 0;
             public static string srvIP = "192.168.1.107";
         }
 
@@ -60,9 +61,9 @@ namespace UDPClient
             Console.WriteLine("Current Position From Server: " + Vars.srvPos); //position recieved from server
 
             udpClient2.Close();
+            returnPos(Vars.curPos + Vars.srvInc); //if a client connects in the middle of this, they get the next set of work
 
-            int j = 0;
-            for (j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
+            for (int j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
             {
                 //calculate MD5 hash from input
                 MD5 md5 = MD5.Create();
@@ -79,14 +80,16 @@ namespace UDPClient
                 if (0 == comp.Compare(Vars.srvHash, sb.ToString()))
                 {
                     Console.WriteLine("Hash Found: " + j.ToString());
+                    break;
                 }
                 if (j % 100000 == 0)
                 {
                     Console.WriteLine("Cracking Position: " + j.ToString());
                 }
+                Vars.curPos = (j);
             }
-            Console.WriteLine("Hash Not Yet Found. Last Position: " + (j - 1).ToString());
-            returnPos(j - 1);
+            Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.curPos.ToString());
+            
             Crack();
         }
 
