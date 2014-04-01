@@ -13,3 +13,8 @@ D:\Documents\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\bin\Debug\
 D:\Documents\Uni\Year 2\NGC\Assignment\UDP Client\UDPClient\UDPClient\obj\x86\Debug\UDPClient.csprojResolveAssemblyReference.cache
 D:\Code\UDPClient\obj\x86\Debug\UDPClient.exe
 D:\Code\UDPClient\obj\x86\Debug\UDPClient.pdb
+C:\Code\UDPClient\obj\x86\Debug\UDPClient.exe
+C:\Code\UDPClient\obj\x86\Debug\UDPClient.pdb
+C:\Code\UDPClient\bin\Debug\UDPClient.exe
+C:\Code\UDPClient\bin\Debug\UDPClient.pdb
+C:\Code\UDPClient\obj\x86\Debug\UDPClient.csprojResolveAssemblyReference.cache

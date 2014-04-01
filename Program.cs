@@ -16,30 +16,26 @@ namespace UDPClient
         {
             public static string srvHash = "";
             public static int srvPos = 0;
-            public static int srvInc = 412819820;
+            public static int srvInc = 2000;
+            public static string srvIP = "192.168.43.46";
         }
 
         static void Main(string[] args)
         {
             Thread Thread1 = null;  // create thread instance
-            Thread Thread2 = null;  
             UdpClient udpClient = new UdpClient(8008);
-            Thread1 = new Thread(new ThreadStart(recievePos)); //ascociate the function with the thread
-            Thread1.Start();
-
-            
 
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
-            Console.WriteLine("Client is Started");
-            //recieve the data from the UDP packet
+            Console.WriteLine("Client has Started");
             
+            //recieve the data from the UDP packet
             recieveBytes = udpClient.Receive(ref remoteIPEndPoint);
             Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
             Console.WriteLine(Vars.srvHash); //hash debug
 
-            Thread2 = new Thread(new ThreadStart(Crack));
-            Thread2.Start();
+            Thread1 = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
+            Thread1.Start();
 
             Console.WriteLine("Press Enter Program Finished");
             Console.ReadLine(); //delay end of program
@@ -48,22 +44,24 @@ namespace UDPClient
             Environment.Exit(0); //kill the application and all threads
         }
 
-        static void recievePos()
+        static void Crack()
         {
+            //get the position from the server
             UdpClient udpClient2 = new UdpClient(8009);
             string returnData = "";
+            //int test = 0;
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8009);  //open port 8009 on this machine
 
             recieveBytes = udpClient2.Receive(ref remoteIPEndPoint);
             returnData = Encoding.ASCII.GetString(recieveBytes);
-            Console.WriteLine(returnData.TrimEnd()); //position recieved from server
-            
-            udpClient2.Close();
-        }
 
-        static void Crack()
-        {
+            //test = Encoding.ASCII.GetString(returnData); //needs to be an int so that it can go into the crackPos and be used
+            Vars.srvPos = Convert.ToInt32(returnData);
+            Console.WriteLine("Current Position From Server: " + returnData.TrimEnd()); //position recieved from server
+
+            udpClient2.Close();
+
             int j = 0;
             for (j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
             {
