@@ -17,6 +17,7 @@ namespace UDPClient
             public static string srvHash = "";
             public static int srvPos = 0;
             public static int srvInc = 2000;
+            public static string srvIP = "192.168.43.46";
         }
 
         static void Main(string[] args)
@@ -27,7 +28,7 @@ namespace UDPClient
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
             Console.WriteLine("Client has Started");
-
+            
             //recieve the data from the UDP packet
             recieveBytes = udpClient.Receive(ref remoteIPEndPoint);
             Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
@@ -48,7 +49,7 @@ namespace UDPClient
             //get the position from the server
             UdpClient udpClient2 = new UdpClient(8009);
             string returnData = "";
-            int test = 0;
+            //int test = 0;
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8009);  //open port 8009 on this machine
 
