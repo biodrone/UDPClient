@@ -88,8 +88,8 @@ namespace UDPClient
                 }
                 //Vars.curPos = (j);
             }
-            Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.srvPos.ToString());
-            
+            Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.curPos.ToString());
+            //Vars.srvPos = Vars.curPos;
             Crack();
         }
 
