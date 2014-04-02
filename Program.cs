@@ -18,7 +18,7 @@ namespace UDPClient
             public static int srvPos = 0;
             public static int srvInc = 1000000;
             public static int curPos = 0;
-            public static string srvIP = "192.168.1.107";
+            //public static string srvIP = "192.168.1.107";
         }
 
         static void Main(string[] args)
@@ -81,7 +81,7 @@ namespace UDPClient
                 {
                     Console.WriteLine("Hash Found: " + j.ToString());
                     returnPos("found");
-                    break;
+                    Thread.CurrentThread.Abort();
                 }
                 if (j % 100000 == 0)
                 {
@@ -103,6 +103,7 @@ namespace UDPClient
 
             sendBytes = Encoding.ASCII.GetBytes(curPos.ToString());
             sender.Send(sendBytes, sendBytes.GetLength(0));
+            
         }
     }
 }
