@@ -18,7 +18,6 @@ namespace UDPClient
             public static int srvPos = 0;
             public static int srvInc = 1000000;
             public static int curPos = 0;
-            //public static string srvIP = "192.168.1.107";
         }
 
         static void Main(string[] args)
