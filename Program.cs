@@ -24,14 +24,14 @@ namespace UDPClient
         static void Main(string[] args)
         {
             Thread Thread1 = null;  // create thread instance
-            UdpClient udpClient = new UdpClient(8008);
+            UdpClient udpHashRec = new UdpClient(8008);
 
             Byte[] recieveBytes = new Byte[1024]; // buffer to read the data into 1 kilobyte at a time
             IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
             Console.WriteLine("Client has Started");
             
             //recieve the data from the UDP packet
-            recieveBytes = udpClient.Receive(ref remoteIPEndPoint);
+            recieveBytes = udpHashRec.Receive(ref remoteIPEndPoint);
             Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
             Console.WriteLine(Vars.srvHash); //hash debug
 
@@ -41,7 +41,7 @@ namespace UDPClient
             Console.WriteLine("It's Crack Time, Warm The Pipe Up");
             Console.ReadLine(); //delay end of program
             Thread1.Abort();
-            udpClient.Close();  //close the connection
+            udpHashRec.Close();  //close the connection
             Environment.Exit(0); //kill the application and all threads
         }
 
@@ -61,7 +61,7 @@ namespace UDPClient
             Console.WriteLine("Current Position From Server: " + Vars.srvPos); //position recieved from server
 
             udpClient2.Close();
-            returnPos("next"); //if a client connects in the middle of this, they get the next set of work
+            returnPos("next"); //makes the server increment the crackingPos
 
             for (int j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
             {
@@ -80,7 +80,7 @@ namespace UDPClient
                 if (0 == comp.Compare(Vars.srvHash, sb.ToString()))
                 {
                     Console.WriteLine("Hash Found: " + j.ToString());
-                    returnPos("found");
+                    returnPos("found:" + j.ToString());
                     Thread.CurrentThread.Abort();
                 }
                 if (j % 100000 == 0)
@@ -90,7 +90,6 @@ namespace UDPClient
                 Vars.curPos = (j);
             }
             Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.curPos.ToString());
-            //Vars.srvPos = Vars.curPos;
             Crack();
         }
 
@@ -103,7 +102,6 @@ namespace UDPClient
 
             sendBytes = Encoding.ASCII.GetBytes(curPos.ToString());
             sender.Send(sendBytes, sendBytes.GetLength(0));
-            
         }
     }
 }
