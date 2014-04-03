@@ -31,7 +31,7 @@ namespace UDPClient
                 crackThread = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
                 crackThread.Start();
 
-                Console.WriteLine("It's Crack Time, Warm The Pipe Up");
+                Console.WriteLine("Cracking Has Begun.");
                 Console.ReadLine(); //delay end of program
 
                 crackThread.Abort();
