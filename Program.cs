@@ -67,49 +67,72 @@ namespace UDPClient
 
         static void Crack()
         {
-            //get the position from the server
-            UdpClient posReceiver = new UdpClient(8009);
-            string receivedPos = "";
-
-            Byte[] recievedBytes = new Byte[1024]; 
-            IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8009);
-
-            recievedBytes = posReceiver.Receive(ref remoteIPEndPoint);
-            receivedPos = Encoding.ASCII.GetString(recievedBytes);
-
-            Vars.srvPos = Convert.ToInt32(receivedPos); //position recieved from server
-            Console.WriteLine("Current Position From Server: " + Vars.srvPos); 
-
-            posReceiver.Close();
-            returnPos("next"); //makes the server increment the crackingPos
-
-            for (int j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
+            try
             {
-                //calculate MD5 hash from input
-                MD5 md5 = MD5.Create();
-                byte[] hashThis = Encoding.ASCII.GetBytes(j.ToString());
-                byte[] hash = md5.ComputeHash(hashThis);
 
-                //convert bytes to string for comparison
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hash.Length; i++)
+                //get the position from the server
+                UdpClient posReceiver = new UdpClient(8009);
+                string receivedPos = "";
+
+                Byte[] recievedBytes = new Byte[1024];
+                IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8009);
+
+                recievedBytes = posReceiver.Receive(ref remoteIPEndPoint);
+                receivedPos = Encoding.ASCII.GetString(recievedBytes);
+
+                Vars.srvPos = Convert.ToInt32(receivedPos); //position recieved from server
+                Console.WriteLine("Current Position From Server: " + Vars.srvPos);
+
+                posReceiver.Close();
+            }
+            catch
+            {
+                Console.WriteLine("Failed Recieving Position From Server.");
+            }
+
+            try
+            {
+                returnPos("next"); //makes the server increment the crackingPos
+            }
+            catch
+            {
+                Console.WriteLine("Failed to Return Position to Server.");
+            }
+
+            try
+            {
+                for (int j = Vars.srvPos; j <= (Vars.srvPos + Vars.srvInc); j++)
                 {
-                    sb.Append(hash[i].ToString("x2"));
+                    //calculate MD5 hash from input
+                    MD5 md5 = MD5.Create();
+                    byte[] hashThis = Encoding.ASCII.GetBytes(j.ToString());
+                    byte[] hash = md5.ComputeHash(hashThis);
+
+                    //convert bytes to string for comparison
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < hash.Length; i++)
+                    {
+                        sb.Append(hash[i].ToString("x2"));
+                    }
+                    StringComparer md5Comp = StringComparer.OrdinalIgnoreCase;
+                    if (0 == md5Comp.Compare(Vars.srvHash, sb.ToString()))
+                    {
+                        Console.WriteLine("Hash Found: " + j.ToString());
+                        returnPos("found:" + j.ToString());
+                        receiveHash(); //check if the hash has been found somewhere else
+                        Thread.Sleep(10000);
+                        Thread.CurrentThread.Abort();
+                    }
+                    if (j % 100000 == 0) //output to console every 10K
+                    {
+                        Console.WriteLine("Cracking Position: " + j.ToString());
+                    }
+                    Vars.curPos = (j);
                 }
-                StringComparer md5Comp = StringComparer.OrdinalIgnoreCase;
-                if (0 == md5Comp.Compare(Vars.srvHash, sb.ToString()))
-                {
-                    Console.WriteLine("Hash Found: " + j.ToString());
-                    returnPos("found:" + j.ToString());
-                    receiveHash(); //check if the hash has been found somewhere else
-                    Thread.Sleep(10000);
-                    Thread.CurrentThread.Abort();
-                }
-                if (j % 100000 == 0) //output to console every 10K
-                {
-                    Console.WriteLine("Cracking Position: " + j.ToString());
-                }
-                Vars.curPos = (j);
+            }
+            catch
+            {
+                Console.WriteLine("Failed in the MD5 Hash Creating/Matching");
             }
             receiveHash(); //check if the hash has been found somewhere else
             Crack();
