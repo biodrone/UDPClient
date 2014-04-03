@@ -140,13 +140,20 @@ namespace UDPClient
 
         static void returnPos(string strSend) //make it a string
         {
-            UdpClient posSender = new UdpClient();
-            Byte[] sendBytes = new Byte[1024];
-            IPAddress address = IPAddress.Parse(IPAddress.Broadcast.ToString());
-            posSender.Connect(address, 8010);
+            try
+            {
+                UdpClient posSender = new UdpClient();
+                Byte[] sendBytes = new Byte[1024];
+                IPAddress address = IPAddress.Parse(IPAddress.Broadcast.ToString());
+                posSender.Connect(address, 8010);
 
-            sendBytes = Encoding.ASCII.GetBytes(strSend.ToString());
-            posSender.Send(sendBytes, sendBytes.GetLength(0));
+                sendBytes = Encoding.ASCII.GetBytes(strSend.ToString());
+                posSender.Send(sendBytes, sendBytes.GetLength(0));
+            }
+            catch
+            {
+                Console.WriteLine("Failed to Return Position to Client.");
+            }
         }
     }
 }
