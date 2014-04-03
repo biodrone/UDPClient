@@ -23,13 +23,8 @@ namespace UDPClient
         static void Main(string[] args)
         {
             Thread crackThread = null;  //create thread instance
-            UdpClient hashReciever = new UdpClient(8008);
-            Byte[] recieveBytes = new Byte[1024]; //buffer to read the data into 1 kilobyte at a time
-            IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
+            receiveHash();
             Console.WriteLine("Client has Started");
-            
-            recieveBytes = hashReciever.Receive(ref remoteIPEndPoint);
-            Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
 
             crackThread = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
             crackThread.Start();
@@ -37,8 +32,23 @@ namespace UDPClient
             Console.WriteLine("It's Crack Time, Warm The Pipe Up");
             Console.ReadLine(); //delay end of program
             crackThread.Abort();
-            hashReciever.Close();  //close the connection
+            
             Environment.Exit(0); //kill the application and all threads
+        }
+
+        static void receiveHash()
+        {
+            UdpClient hashReciever = new UdpClient(8008);
+            Byte[] recieveBytes = new Byte[1024]; //buffer to read the data into 1 kilobyte at a time
+            IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
+
+            recieveBytes = hashReciever.Receive(ref remoteIPEndPoint);
+            Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
+            hashReciever.Close();  //close the connection
+            if (Vars.srvHash == "found")
+            {
+                Environment.Exit(0);
+            }
         }
 
         static void Crack()
@@ -77,6 +87,8 @@ namespace UDPClient
                 {
                     Console.WriteLine("Hash Found: " + j.ToString());
                     returnPos("found:" + j.ToString());
+                    receiveHash(); //check if the hash has been found somewhere else
+                    Thread.Sleep(10000);
                     Thread.CurrentThread.Abort();
                 }
                 if (j % 100000 == 0) //output to console every 10K
@@ -85,7 +97,7 @@ namespace UDPClient
                 }
                 Vars.curPos = (j);
             }
-            //Console.WriteLine("Hash Not Yet Found. Last Position: " + Vars.curPos.ToString());
+            receiveHash(); //check if the hash has been found somewhere else
             Crack();
         }
 
