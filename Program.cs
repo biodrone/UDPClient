@@ -45,16 +45,23 @@ namespace UDPClient
 
         static void receiveHash()
         {
-            UdpClient hashReciever = new UdpClient(8008);
-            Byte[] recieveBytes = new Byte[1024]; //buffer to read the data into 1 kilobyte at a time
-            IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
-
-            recieveBytes = hashReciever.Receive(ref remoteIPEndPoint);
-            Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
-            hashReciever.Close();  //close the connection
-            if (Vars.srvHash == "found")
+            try
             {
-                Environment.Exit(0);
+                UdpClient hashReciever = new UdpClient(8008);
+                Byte[] recieveBytes = new Byte[1024]; //buffer to read the data into 1 kilobyte at a time
+                IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, 8008);  //open port 8008 on this machine
+
+                recieveBytes = hashReciever.Receive(ref remoteIPEndPoint);
+                Vars.srvHash = Encoding.ASCII.GetString(recieveBytes);
+                hashReciever.Close();  //close the connection
+                if (Vars.srvHash == "found")
+                {
+                    Environment.Exit(0);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Receiving Hash Failed.");
             }
         }
 
