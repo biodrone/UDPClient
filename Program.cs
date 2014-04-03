@@ -22,18 +22,25 @@ namespace UDPClient
 
         static void Main(string[] args)
         {
-            Thread crackThread = null;  //create thread instance
-            receiveHash();
-            Console.WriteLine("Client has Started");
+            try
+            {
+                Thread crackThread = null;  //create thread instance
+                receiveHash();
+                Console.WriteLine("Client has Started");
 
-            crackThread = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
-            crackThread.Start();
+                crackThread = new Thread(new ThreadStart(Crack)); //ascociate the function with the thread
+                crackThread.Start();
 
-            Console.WriteLine("It's Crack Time, Warm The Pipe Up");
-            Console.ReadLine(); //delay end of program
-            crackThread.Abort();
-            
-            Environment.Exit(0); //kill the application and all threads
+                Console.WriteLine("It's Crack Time, Warm The Pipe Up");
+                Console.ReadLine(); //delay end of program
+
+                crackThread.Abort();
+                Environment.Exit(0); //kill the application and all threads
+            }
+            catch
+            {
+                Console.WriteLine("Error in Main Thread.");
+            }
         }
 
         static void receiveHash()
